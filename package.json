@@ -1,0 +1,36 @@
+{
+  "name": "react-html-email",
+  "version": "0.0.1",
+  "description": "",
+  "source": "src/index.tsx",
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "unpkg": "dist/index.umd.js",
+  "types": "dist/index.d.ts",
+  "files":["dist"],
+  "scripts": {
+    "build": "microbundle",
+    "dev": "microbundle watch",
+    "test": "cucumber-js --require 'test/**/*.ts' --tags \"@automated and not @skip\""
+  },
+  "author": "logvol",
+  "license": "MIT",
+  "dependencies": {
+    "dompurify": "^2.1.0",
+    "html-react-parser": "^0.14.0",
+    "jsdom": "^16.4.0",
+    "juice": "^7.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^7.0.0-rc.0",
+    "@types/chai": "^4.2.12",
+    "@types/dompurify": "^2.0.4",
+    "@types/jsdom": "^16.2.4",
+    "@types/react": "^16.9.49",
+    "@types/react-dom": "^16.9.8",
+    "chai": "^4.2.0",
+    "microbundle": "^0.12.3"
+  }
+}
