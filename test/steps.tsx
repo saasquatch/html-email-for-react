@@ -71,34 +71,24 @@ Given("a React component registered as {string} with source", function (
 
   let Comp: any = _eval(
     `
-  var React = require("react");
-  module.exports = ${jsSource}
-  `,
+    var React = require("react");
+    module.exports = ${jsSource}
+    `,
     "file.example.js",
     { React },
     true
   );
 
   // console.log("Evaled to", jsSource, " type ", typeof Comp, Comp);
-  const domPurifyOptions = {
-    ADD_TAGS: [componentName],
-  };
-  const reactParserOptions: HTMLReactParserOptions = {
-    library: React,
-    replace: ({ name }: DomElement) => {
-      // console.log("Element", element)
-      //   throw new Error("Hit the place");
-      if (name === componentName) {
-        //@ts-ignore
-        // return "Hello world" as JSX.Element
-        // return React.createElement("div", {}, "Hello world");
-        return Comp.apply(this);
-      }
-    },
+  const components = {
+    [componentName]: Comp,
   };
 
   this.options = {
-    reactParserOptions,
-    domPurifyOptions,
+    components: {
+      ...this.options?.components,
+      ...components,
+    },
   };
+  // console.log("Components", this.options);
 });

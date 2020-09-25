@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import parse, { HTMLReactParserOptions } from "html-react-parser";
+import parse, { attributesToProps, DomElement, domToReact, HTMLReactParserOptions } from "html-react-parser";
 import juice from "juice";
 import createDOMPurify from "dompurify";
 import type { ConstructorOptions } from "jsdom";
@@ -30,6 +30,8 @@ export type Options<T> = {
    * Used to customize the `jsdom` instance (in node env)
    */
   jsdomOptions?: ConstructorOptions;
+
+  components?: { [key:string]: React.Component}
 };
 
 export function render<T>(
@@ -40,6 +42,7 @@ export function render<T>(
     reactParserOptions = {},
     juiceOptions = {},
     jsdomOptions = {},
+    components = {}
   }: Options<T> = {}
 ): string {
   if (typeof html !== "string") throw new Error("Html should be a string");
@@ -49,6 +52,9 @@ export function render<T>(
 
   // TODO: Probably a better way to check this. Ideally we could configure DOMPurify to return the document when it has a document, but alas :'(
   const WHOLE_DOCUMENT = html.trimStart().startsWith("<html");
+  const hasComponents = Object.keys(components).length > 0;
+  const ADD_TAGS = [...Object.keys(components), ...(domPurifyOptions.ADD_TAGS || [])];
+//   console.log("allowed tags", ADD_TAGS)
   const clean = DOMPurify.sanitize(html, {
     // Default options
     WHOLE_DOCUMENT,
@@ -58,11 +64,40 @@ export function render<T>(
     ...domPurifyOptions,
 
     // Non-overidable options
+    ADD_TAGS,
     RETURN_DOM_FRAGMENT: false,
   }) as string;
 
+  const existingReplace = reactParserOptions?.replace;
+  const parserOptions = {
+    ...reactParserOptions,
+    replace: function(node:DomElement){
+        /**
+         * Default returns whatever "replace" wants to do
+         * 
+         * (this allows downstream fine-grained control)
+        */
+        const newValue = existingReplace && existingReplace(node);
+        if(newValue) return newValue;
+
+        /**
+         * Otherwise replace from the component map
+         */
+        if(node.name && hasComponents){
+            // console.log("Finding replacemenet for", node)
+            const Component = components[node.name];
+            if(Component){
+                const props = node.attribs && attributesToProps(node.attribs);
+                const children = node.children && domToReact(node.children, parserOptions);
+                // @ts-expect-error -- no typing information available on the component
+                return React.createElement(Component,props,children);
+            }
+        }
+    }
+  };
+
   // Switch to DOM nodes instead of string?
-  const reactElement = parse(clean, reactParserOptions);
+  const reactElement = parse(clean, parserOptions);
   const root = React.createElement(DataContext.Provider, { value: data }, [
     reactElement,
   ]);

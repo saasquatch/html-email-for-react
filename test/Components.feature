@@ -43,7 +43,7 @@ Feature: Allows dynamic components
             const cols = ["Column A","Column B","Column C"];
             return <table>
             <tbody><tr>
-            {cols.map(c=>(<td>{c}</td>)}
+            {cols.map(c=>(<td key={c}>{c}</td>)}
             </tr></tbody>
             </table>
             }
@@ -74,4 +74,59 @@ Feature: Allows dynamic components
 
             </body>
             </html>
+            """
+
+
+    @automated
+    Scenario: React components support children
+
+        Given a React component registered as "my-component" with source
+            """
+            function MyComponent({children}){
+            return <div style={{color:"red"}}>{children}</div>
+            }
+            """
+        Given an HTML template
+            """
+            <my-component><span>Children</span> inside</my-component>
+            """
+        Then the output html is de-reactified
+            """
+            <div style="color:red"><span>Children</span> inside</div>
+            """
+
+    @automated
+    Scenario: React components support props
+
+        Given a React component registered as "my-component" with source
+            """
+            function MyComponent({color}){
+            return <div style={{color}}>{color}</div>
+            }
+            """
+        Given an HTML template
+            """
+            <my-component color="red"></my-component>
+            """
+        Then the output html is de-reactified
+            """
+            <div style="color:red">red</div>
+            """
+
+    @automated
+    Scenario: React components support props, children and self-nesting
+
+        Given a React component registered as "my-component" with source
+            """
+            function MyComponent({color, children}){
+            return <div style={{color}}>{children}</div>
+            }
+            """
+        Given an HTML template
+            """
+            <my-component color="red"><my-component color="blue">Green</my-component></my-component>
+            """
+        Then the output html is de-reactified
+            """
+            <div style="color:red"><div style="color:blue">Green</div></div>
             """

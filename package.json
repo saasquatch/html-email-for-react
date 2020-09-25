@@ -13,7 +13,7 @@
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
-    "test": "cucumber-js --tags \"@automated and not @skip\""
+    "test": "cucumber-js --tags \"@automated and not @skip\" --publish"
   },
   "author": "logvol",
   "license": "MIT",
