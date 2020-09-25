@@ -5,13 +5,12 @@
   "source": "src/index.tsx",
   "main": "dist/index.js",
   "module": "dist/index.module.js",
-  "unpkg": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle --no-compress",
     "dev": "microbundle watch",
     "test": "cucumber-js --tags \"@automated and not @skip\" --publish"
   },
