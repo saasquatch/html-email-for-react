@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import parse, { domToReact, HTMLReactParserOptions } from "html-react-parser";
+import parse, { HTMLReactParserOptions } from "html-react-parser";
 import juice from "juice";
 import createDOMPurify from "dompurify";
 import type { ConstructorOptions } from "jsdom";

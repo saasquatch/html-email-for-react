@@ -13,7 +13,7 @@
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
-    "test": "cucumber-js --require 'test/**/*.ts' --tags \"@automated and not @skip\""
+    "test": "cucumber-js --tags \"@automated and not @skip\""
   },
   "author": "logvol",
   "license": "MIT",
@@ -33,6 +33,7 @@
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
     "chai": "^4.2.0",
+    "eval": "^0.1.4",
     "html-differ": "^1.4.0",
     "microbundle": "^0.12.3"
   }
