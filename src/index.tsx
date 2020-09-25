@@ -31,7 +31,7 @@ export type Options<T> = {
    */
   jsdomOptions?: ConstructorOptions;
 
-  components?: { [key:string]: React.Component}
+  components?: { [key:string]: React.ReactNode}
 };
 
 export function render<T>(
