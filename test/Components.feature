@@ -7,6 +7,11 @@ Feature: Allows dynamic components
     Developers get the same great JSX rendering experience they're used to, and other parsers can process
     everything as it's just pure HTML.
 
+
+    Background: Background name
+        Given "React" is imported from "react"
+        And "useContext" is imported from "html-email-for-react"
+
     @automated
     Scenario: React email components are rendered without artefacts
 
@@ -106,7 +111,7 @@ Feature: Allows dynamic components
             """
         Given an HTML template
             """
-            <my-component color="red"></my-component>
+            <my-component color="red">464749400
             """
         Then the output html is de-reactified
             """
@@ -129,4 +134,29 @@ Feature: Allows dynamic components
         Then the output html is de-reactified
             """
             <div style="color:red"><div style="color:blue">Green</div></div>
+            """
+
+    @automated
+    Scenario: React components can access global data
+
+        Given a React component registered as "my-component" with source
+            """
+            function(){
+            const {name} = useData();
+            return <div>{name}</div>;
+            }
+            """
+        Given an HTML template
+            """
+            <my-component></my-component>
+            """
+        And global data
+            """
+            {
+                "name": "Jorghan"
+            }
+            """
+        Then the output html is de-reactified
+            """
+            <div>Jorghan</div>
             """

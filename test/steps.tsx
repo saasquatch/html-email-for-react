@@ -1,6 +1,6 @@
 import React from "react";
 import { Given, Then } from "@cucumber/cucumber";
-import { Options, render } from "../dist";
+import { Options, render, useData } from "../dist";
 import { assert } from "chai";
 import * as ts from "typescript";
 
@@ -15,6 +15,7 @@ var _eval = require("eval");
 class World {
   template?: string;
   options?: Options<unknown>;
+  imports?: { [key: string]: unknown };
 }
 
 Given("an HTML template with {}", function (
@@ -75,7 +76,7 @@ Given("a React component registered as {string} with source", function (
     module.exports = ${jsSource}
     `,
     "file.example.js",
-    { React },
+    this.imports,
     true
   );
 
@@ -91,4 +92,23 @@ Given("a React component registered as {string} with source", function (
     },
   };
   // console.log("Components", this.options);
+});
+
+Given("{string} is imported from {string}", function (
+  this: World,
+  variable: string,
+  module: string
+) {
+  this.imports = {
+    React,
+    useData,
+  };
+});
+
+Given("global data", function (this: World, dataString: string) {
+  // Write code here that turns the phrase above into concrete actions
+  this.options = {
+    ...this.options,
+    data: JSON.parse(dataString),
+  };
 });
