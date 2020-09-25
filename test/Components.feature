@@ -8,12 +8,17 @@ Feature: Allows dynamic components
     everything as it's just pure HTML.
 
 
-    Background: Background name
+    Background: Javascript imports
+
+        For simplicity of understanding, you can read the javascript component examples as if these variables are imported
+
         Given "React" is imported from "react"
         And "useContext" is imported from "html-email-for-react"
 
     @automated
     Scenario: React email components are rendered without artefacts
+
+        The rendering procss will remove "my-component" from the HTML, leaving no trace to trip up email clients
 
         Given a React component registered as "my-component" with source
             """
@@ -41,6 +46,8 @@ Feature: Allows dynamic components
             </html>
             """
 
+    @automated
+    Scenario: React components support logic and nested components
 
         Given a React component registered as "special-table" with source
             """
@@ -85,6 +92,8 @@ Feature: Allows dynamic components
     @automated
     Scenario: React components support children
 
+        Plain HTML elements can be just used in children components
+
         Given a React component registered as "my-component" with source
             """
             function MyComponent({children}){
@@ -103,19 +112,22 @@ Feature: Allows dynamic components
     @automated
     Scenario: React components support props
 
+        Props are transformed into from HTML standards into their React equivalents (e.g. style and className)
+
         Given a React component registered as "my-component" with source
             """
-            function MyComponent({color}){
-            return <div style={{color}}>{color}</div>
+            function MyComponent({style, color, className}){
+            const nextStyle = {...style, color}
+            return <div className={className} style={nextStyle}>{color}</div>
             }
             """
         Given an HTML template
             """
-            <my-component color="red">464749400
+            <my-component color="red" class="rouge" style="font-size:12px;"></my-component>
             """
         Then the output html is de-reactified
             """
-            <div style="color:red">red</div>
+            <div style="font-size:12px;color:red" class="rouge">red</div>
             """
 
     @automated
@@ -148,7 +160,7 @@ Feature: Allows dynamic components
             """
         Given an HTML template
             """
-            <my-component></my-component>
+            <my-component>532235300
             """
         And global data
             """

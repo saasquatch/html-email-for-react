@@ -35,7 +35,7 @@ Feature: Renders plain HTML emails
     @automated
     Scenario: Bad HTML is purified
 
-        This uses DomPurify that is well supported and has more cases described
+        This uses DomPurify. DomPurify is well supported and has more cases described on how it works.
 
         Given an HTML template with bad html
             """
@@ -45,7 +45,6 @@ Feature: Renders plain HTML emails
             <div>No closing tag</body>
             </html>
             """
-        # NOTE: Output is written to be whitepsace / newline sensitive
         Then the output html is purified
             """
             <html>
@@ -60,9 +59,10 @@ Feature: Renders plain HTML emails
 
 
     @automated
-    Scenario Outline: Subdocument fragments render
-        # Given an HTML template "<fragment>"
-        # Then the output html is "<fragment>"
+    Scenario Outline: Subdocument fragments render directly
+
+        There is no need to test things end-to-end
+        
         Given an HTML template
             """
             <fragment>

@@ -64,7 +64,8 @@ Given("a React component registered as {string} with source", function (
   tsSource: string
 ) {
   let jsSource = ts.transpile(tsSource, {
-    jsx: 2,
+    jsx: ts.JsxEmit.React,
+    target: ts.ScriptTarget.ES2020,
     strict: false,
     noEmitOnError: true,
   });
