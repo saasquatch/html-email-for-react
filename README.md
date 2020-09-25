@@ -8,39 +8,11 @@ _The problem_ with writing good emails is combining the static parts and the dyn
 
 **The best part about emails is the HTML**. Stop getting rid of it, and start building on it.
 
-### HTML Emails with React parts
-
-Given a React component registered as `<my-component>` with source
-
-```js
-function MyComponent() {
-  return <div>Hello world</div>;
-}
-```
-
-And an HTML email template
-
-```html
-<html>
-  <body>
-    <my-component></my-component>
-  </body>
-</html>
-```
-
-Then the output html will be
-
-```html
-<html>
-  <body>
-    <div>Hello world</div>
-  </body>
-</html>
-```
+## Example
 
 ```js
 import React from "react";
-import { render } from "html-email-for-react";
+import { render, useData } from "html-email-for-react";
 
 const html = `
 <html>
@@ -51,22 +23,36 @@ const html = `
 `;
 
 function MyComponent() {
-  return <div>Hello world</div>;
+  const { name } = useData();
+  return <div>Hello {name}</div>;
 }
-const reactParserOptions = {
-  replace: ({ attribs, children }) => {
-    if (!attribs) return;
-
-    if (attribs.tagName === "my-component") {
-      return <MyComponent />;
-    }
-  },
+// NOTE: Html components are CASE-InSeNsItIvE and React are not
+// So use lowercase component names (see customElements.define)
+const components = {
+  "my-component": MyComponent,
 };
+const data = {
+  name: "Jorghan",
+};
+console.log(render(html, { components, data }));
+/*
+Returns:
 
-console.log(render(html,{reactParserOptions}));
+<html>
+  <body>
+    <div>Hello world</div>
+  </body>
+</html>
+*/
 ```
 
 The great part of this is that it brings the portable web-component method of building components and allows you to.
+
+### More Examples
+
+- [Components (with props, children, nesting)](test/Components.feature)
+- [CSS Inlining](test/CSSInlining.feature)
+- [Plain HTML support](test/PlainHTML.feature)
 
 ### Inspiration
 
