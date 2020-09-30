@@ -1,6 +1,6 @@
 {
   "name": "html-email-for-react",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "source": "src/index.tsx",
   "main": "dist/index.js",
@@ -14,9 +14,9 @@
     "dev": "microbundle watch --no-compress --jsx React.createElement",
     "test": "cucumber-js --tags \"@automated and not @skip\" --publish"
   },
-  "outputs":{
-    "globals":{
-      "react-dom/server":"ReactDOMServer"
+  "outputs": {
+    "globals": {
+      "react-dom/server": "ReactDOMServer"
     }
   },
   "author": "logvol",

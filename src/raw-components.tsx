@@ -58,7 +58,7 @@ type PropsOf<Tag extends SupportedTag> = JSXInEl[Tag];
 
 type ComponentOf<Tag extends SupportedTag> = (
   props: PropsOf<Tag>
-) => React.ReactNode;
+) => JSX.Element;
 
 function reducer<Tag extends SupportedTag>(acc: Partial<StyledTags>, el: Tag) {
   const Componet: ComponentOf<Tag> = ({ children, ...rest }) => (
