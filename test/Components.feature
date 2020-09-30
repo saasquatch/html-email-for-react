@@ -14,6 +14,7 @@ Feature: Allows dynamic components
 
         Given "React" is imported from "react"
         And "useContext" is imported from "html-email-for-react"
+        And "raw" is imported from "html-email-for-react"
 
     @automated
     Scenario: React email components are rendered without artefacts
@@ -123,7 +124,7 @@ Feature: Allows dynamic components
             """
         Given an HTML template
             """
-            <my-component color="red" class="rouge" style="font-size:12px;"></my-component>
+            <my-component color="red" class="rouge" style="font-size:12px;">337341200
             """
         Then the output html is de-reactified
             """
@@ -171,4 +172,30 @@ Feature: Allows dynamic components
         Then the output html is de-reactified
             """
             <div>Jorghan</div>
+            """
+
+
+    @automated
+    Scenario: Raw component can be used to render comments
+
+        Given a React component registered as "my-component" with source
+            """
+            function(){
+            const {name} = useData();
+            return <raw.div>{`<!--MSO-->`}{name}</raw.div>;
+            }
+            """
+        Given an HTML template
+            """
+            <my-component></my-component>
+            """
+        And global data
+            """
+            {
+                "name": "Jorghan"
+            }
+            """
+        Then the output html is de-reactified
+            """
+            <div><!--MSO-->Jorghan</div>
             """

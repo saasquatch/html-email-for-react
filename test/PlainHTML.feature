@@ -62,7 +62,7 @@ Feature: Renders plain HTML emails
     Scenario Outline: Subdocument fragments render directly
 
         There is no need to test things end-to-end
-        
+
         Given an HTML template
             """
             <fragment>
@@ -132,3 +132,4 @@ Feature: Renders plain HTML emails
         Examples:
             | fragment            | output |
             | <!-- Comment... --> |        |
+            | <!DOCTYPE html>     |        |
