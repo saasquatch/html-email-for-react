@@ -61,12 +61,12 @@ type ComponentOf<Tag extends SupportedTag> = (
 ) => JSX.Element;
 
 function reducer<Tag extends SupportedTag>(acc: Partial<StyledTags>, el: Tag) {
-  const Componet: ComponentOf<Tag> = ({ children, ...rest }) => (
+  const c: ComponentOf<Tag> = ({ children, ...rest }) => (
     <RawHTMLWrapper as={el} {...rest}>
       {children}
     </RawHTMLWrapper>
   );
-  return { ...acc, [el]: Componet };
+  return { ...acc, [el]: c };
 }
 
 export const raw: StyledTags = tags.reduce(reducer, {}) as StyledTags;

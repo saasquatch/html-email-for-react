@@ -124,7 +124,7 @@ Feature: Allows dynamic components
             """
         Given an HTML template
             """
-            <my-component color="red" class="rouge" style="font-size:12px;">337341200
+            <my-component color="red" class="rouge" style="font-size:12px;"></my-component>
             """
         Then the output html is de-reactified
             """
@@ -161,7 +161,7 @@ Feature: Allows dynamic components
             """
         Given an HTML template
             """
-            <my-component>532235300
+            <my-component></my-component>
             """
         And global data
             """
