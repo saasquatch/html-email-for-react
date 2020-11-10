@@ -1,14 +1,12 @@
 import React from "react";
 import { Given, Then } from "@cucumber/cucumber";
-import { Options, render, useData } from "../dist";
 import { assert } from "chai";
 import * as ts from "typescript";
 
 //@ts-ignore
 import { HtmlDiffer } from "html-differ";
-//@ts-ignore
-import logger from "html-differ/lib/logger";
-import { DomElement, HTMLReactParserOptions } from "html-react-parser";
+
+import { Options, render, useData, raw } from "../dist";
 
 var _eval = require("eval");
 
@@ -36,24 +34,29 @@ Given("an HTML template {string}", function (this: World, template: string) {
 Then("the output html is {}", function (
   this: World,
   ignored: unknown,
-  output: string
+  output: string = ""
 ) {
   if (!this.template) throw Error("Need template");
   const rendered = render(this.template, this.options);
 
-  const htmlDiffer = new HtmlDiffer({});
+  if(output && output.trim() !== ""){
+    const htmlDiffer = new HtmlDiffer({});
+    const equel = htmlDiffer.isEqual(output, rendered);
+    const diff = htmlDiffer.diffHtml(output, rendered);
 
-  const equel = htmlDiffer.isEqual(output, rendered);
-  const diff = htmlDiffer.diffHtml(output, rendered);
+    const logg = `
+        Situation: ${ignored}
+        Input: ${this.template}
+        Rendered: ${rendered}
+        Expected: ${output}
+        Diff: ${JSON.stringify(diff)}
+    `;
+    assert.isTrue(equel, logg);
+  }else{
+    assert.isEmpty(rendered, "Should be empty")
+    // Don't diff empty strings
+  }
 
-  const logg = `
-      Situation: ${ignored}
-      Input: ${this.template}
-      Rendered: ${rendered}
-      Expected: ${output}
-      Diff: ${JSON.stringify(diff)}
-  `;
-  assert.isTrue(equel, logg);
 
   //   assert.equal(output, rendered, "Render output should match");
 });
@@ -73,7 +76,6 @@ Given("a React component registered as {string} with source", function (
 
   let Comp: any = _eval(
     `
-    var React = require("react");
     module.exports = ${jsSource}
     `,
     "file.example.js",
@@ -103,6 +105,7 @@ Given("{string} is imported from {string}", function (
   this.imports = {
     React,
     useData,
+    raw
   };
 });
 

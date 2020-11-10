@@ -1,19 +1,23 @@
 {
   "name": "html-email-for-react",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
   "source": "src/index.tsx",
   "main": "dist/index.js",
   "module": "dist/index.module.js",
-  "unpkg": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "microbundle",
-    "dev": "microbundle watch",
+    "build": "microbundle --no-compress --jsx React.createElement",
+    "dev": "microbundle watch --no-compress --jsx React.createElement",
     "test": "cucumber-js --tags \"@automated and not @skip\" --publish"
+  },
+  "outputs": {
+    "globals": {
+      "react-dom/server": "ReactDOMServer"
+    }
   },
   "author": "logvol",
   "license": "MIT",
