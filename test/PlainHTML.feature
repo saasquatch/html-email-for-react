@@ -120,6 +120,7 @@ Feature: Renders plain HTML emails
             | <img src="example.png"/> | <img src="example.png"> |
 
     @automated
+    @landmine
     Scenario Outline: Some tags are not rendered
         Given an HTML template
             """

@@ -5,9 +5,6 @@ import * as ts from "typescript";
 
 //@ts-ignore
 import { HtmlDiffer } from "html-differ";
-//@ts-ignore
-import logger from "html-differ/lib/logger";
-import { DomElement, HTMLReactParserOptions } from "html-react-parser";
 
 import { Options, render, useData, raw } from "../dist";
 
