@@ -1,7 +1,7 @@
 {
   "name": "html-email-for-react",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "An HTML processor that makes it easy to enrich HTML templates with rich React components",
   "source": "src/index.tsx",
   "main": "dist/index.js",
   "module": "dist/index.module.js",
@@ -19,7 +19,7 @@
       "react-dom/server": "ReactDOMServer"
     }
   },
-  "author": "logvol",
+  "author": "ReferralSaaSquatch.com, Inc.",
   "license": "MIT",
   "dependencies": {
     "dompurify": "^2.1.0",
